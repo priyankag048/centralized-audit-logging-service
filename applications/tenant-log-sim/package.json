@@ -1,0 +1,20 @@
+{
+  "name": "tenant-log-sim",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@faker-js/faker": "^10.0.0",
+    "winston": "^3.17.0"
+  },
+  "engines": {
+    "node": ">=23.0.0"
+  }
+}
