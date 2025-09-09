@@ -5,6 +5,13 @@ image:
   pullPolicy: IfNotPresent
   tag: v1.14-1
 
+ingress:
+  enabled: false
+  hosts:
+    - host: fluentd.local
+      paths: ["/"]
+  annotations: {}
+  
 service:
   type: ClusterIP
   port: 24224
@@ -28,3 +35,4 @@ config:
     <match **>
       @type stdout
     </match>
+
