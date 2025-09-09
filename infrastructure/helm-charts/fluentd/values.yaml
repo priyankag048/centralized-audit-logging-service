@@ -1,0 +1,30 @@
+replicaCount: 1
+
+image:
+  repository: fluent/fluentd
+  pullPolicy: IfNotPresent
+  tag: v1.14-1
+
+service:
+  type: ClusterIP
+  port: 24224
+
+config:
+  fluentdConf: |
+    <source>
+      @type forward
+      port 24224
+    </source>
+
+    <filter **>
+      @type record_transformer
+      enable_ruby
+      <record>
+        enriched_at ${Time.now.to_s}
+        env production
+      </record>
+    </filter>
+
+    <match **>
+      @type stdout
+    </match>

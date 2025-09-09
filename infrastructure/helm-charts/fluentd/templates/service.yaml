@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: { { include "fluentd.fullname" . } }
+spec:
+  type: { { .Values.service.type } }
+  ports:
+    - port: { { .Values.service.port } }
+      targetPort: 24224
+      protocol: TCP
+  selector:
+    app: { { include "fluentd.name" . } }
