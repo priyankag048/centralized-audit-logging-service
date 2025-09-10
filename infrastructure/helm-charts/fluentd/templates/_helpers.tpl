@@ -11,7 +11,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 If release name contains chart name it will be used as a full name.
 */}}
 {{- define "fluentd.fullname" -}}
-{{ .Release.Name }}-{{ .Chart.Name }}
+{{ .Values.fullname | default "fluentd" }}
 {{- end }}
 
 {{/*

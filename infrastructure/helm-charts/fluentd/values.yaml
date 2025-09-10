@@ -1,5 +1,7 @@
 replicaCount: 1
 
+fullname: fluentd
+name: fluentd
 image:
   repository: fluent/fluentd
   pullPolicy: IfNotPresent
