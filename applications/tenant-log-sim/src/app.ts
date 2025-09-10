@@ -1,6 +1,7 @@
 import winston from 'winston';
 import { faker } from '@faker-js/faker/locale/en';
-import { tenants, logIntervalMs } from './config.ts';
+
+const TENANT_ID = process.env.TENANT_ID;
 
 const logger = winston.createLogger({
   level: 'info',
@@ -12,12 +13,11 @@ const logger = winston.createLogger({
 });
 
 const generateLog = () => {
-  const tenant_id = tenants[Math.floor(Math.random() * tenants.length)];
-  const service = `service for ${tenant_id}`;
+  const service = `service for ${TENANT_ID}`;
   const log_level = ['info', 'warn', 'error'][Math.floor(Math.random() * 3)];
   return {
     timestamp: new Date().toISOString(),
-    tenant_id,
+    TENANT_ID,
     service,
     log_level,
     message: faker.lorem.sentence(),
@@ -26,12 +26,14 @@ const generateLog = () => {
 
 }
 
-console.log('TenantLogSim started: generating multi-tenant logs every', logIntervalMs, 'ms...');
-
-setInterval(() => {
+const batchSize = 10;
+for (let i = 0; i < batchSize; i++) {
   const log = generateLog();
   logger.log(log.log_level, log);
-}, logIntervalMs);
+}
+
+console.log(`TenantLogSim executed: generated ${batchSize} multi-tenant logs.`);
+
 
 
 

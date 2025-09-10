@@ -1,0 +1,24 @@
+{{- range .Values.tenants }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ $.Values.fullname }}-{{ .id }}
+  namespace: logging
+spec:
+  schedule: "{{ .schedule }}"
+  successfulJobsHistoryLimit: 3   # Keep only last 3 successful jobs
+  failedJobsHistoryLimit: 1       # Keep only last 1 failed job
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: tenantlogger
+              image: {{ $.Values.image.repository }}:{{ $.Values.image.tag }}
+              imagePullPolicy: {{ $.Values.image.pullPolicy }}
+              env:
+                - name: TENANT_ID
+                  value: "{{ .id }}"
+{{- end }}
