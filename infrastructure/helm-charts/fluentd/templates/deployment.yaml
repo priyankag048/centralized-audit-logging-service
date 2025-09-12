@@ -21,9 +21,15 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /fluentd/etc
+              readOnly: true
+            - name: fluentd-logs
+              mountPath: /var/log/fluentd
           ports:
             - containerPort: 24224
       volumes:
         - name: config-volume
           configMap:
             name: '{{ include "fluentd.fullname" . }}-config'
+        - name: fluentd-logs
+          emptyDir: {}   
+     

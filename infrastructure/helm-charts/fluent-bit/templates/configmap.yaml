@@ -4,28 +4,7 @@ metadata:
   name: fluentbit-config
   namespace: logging
 data:
-  fluent-bit.conf: |
-    [SERVICE]
-        Flush        1
-        Daemon       Off
-        Log_Level    info
-        Parsers_File parsers.conf
-
-    [INPUT]
-        Name        tail
-        Path        {{ .Values.fluentbitConfig.inputPath }}
-        Parser      docker
-        Tag         kube.*
-
-    [OUTPUT]
-        Name        forward
-        Match       *
-        Host        {{ .Values.fluentbitConfig.fluentdHost }}
-        Port        {{ .Values.fluentbitConfig.fluentdPort }}
-
-  parsers.conf: |
-    [PARSER]
-        Name        docker
-        Format      json
-        Time_Key    time
-        Time_Format %Y-%m-%dT%H:%M:%S.%L
+  fluent-bit.conf: |-
+    {{ .Values.config.fluentBitConf | nindent 4 }}
+  parsers.conf: |-
+    {{ .Values.config.parsersConf | nindent 4 }}

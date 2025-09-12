@@ -3,10 +3,35 @@ image:
   tag: 1.9
   pullPolicy: IfNotPresent
 
-fluentbitConfig:
-  inputPath: /var/log/containers/*.log
-  fluentdHost: fluentd.logging.svc.cluster.local
-  fluentdPort: 24224
+config:
+  fluentBitConf: |
+      [SERVICE]
+          Flush        1
+          Daemon       Off
+          Log_Level    info
+          Parsers_File parsers.conf
+
+      [INPUT]
+          Name        tail
+          Path        /var/log/containers/tenant-log-sim*.log
+          Tag         tenant-logs-sim
+          Parser      docker
+          Mem_Buf_Limit     5MB
+          Skip_Long_Lines   On
+
+
+      [OUTPUT]
+          Name        forward
+          Match       tenant-logs-sim
+          Host        fluentd.logging.svc.cluster.local
+          Port        24224
+
+  parsersConf: |
+    [PARSER]
+        Name        docker
+        Format      json
+        Time_Key    time
+        Time_Format %Y-%m-%dT%H:%M:%S.%L
 
 resources:
   limits:

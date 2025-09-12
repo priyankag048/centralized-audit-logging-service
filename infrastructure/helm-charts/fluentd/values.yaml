@@ -3,9 +3,9 @@ replicaCount: 1
 fullname: fluentd
 name: fluentd
 image:
-  repository: fluent/fluentd
+  repository: priyankaguha/fluentd
   pullPolicy: IfNotPresent
-  tag: v1.14-1
+  tag: 1.0.0
 
 ingress:
   enabled: false
@@ -23,18 +23,31 @@ config:
     <source>
       @type forward
       port 24224
+      bind 0.0.0.0
     </source>
 
-    <filter **>
-      @type record_transformer
-      enable_ruby
-      <record>
-        enriched_at ${Time.now.to_s}
-        env production
-      </record>
-    </filter>
-
     <match **>
-      @type stdout
+      @type kafka2
+      brokers kafka-0.kafka.logging.svc.cluster.local:9092
+      use_event_time true
+
+      <format>
+        @type json
+      </format>
+
+      # topic settings
+        topic_key topic
+        default_topic tenant-logs
+        partition_key ${record["tenant_id"]}
+
+      
+      <buffer>
+        @type file
+        path /var/log/fluentd/buffer
+        flush_interval 5s
+        retry_max_times 3
+        retry_wait 1s
+      </buffer>
+      
     </match>
 
