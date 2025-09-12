@@ -1,7 +1,7 @@
 import winston from 'winston';
 import { faker } from '@faker-js/faker/locale/en';
 
-const TENANT_ID = process.env.TENANT_ID;
+const tenant_id = process.env.TENANT_ID;
 
 const logger = winston.createLogger({
   level: 'info',
@@ -13,15 +13,16 @@ const logger = winston.createLogger({
 });
 
 const generateLog = () => {
-  const service = `service for ${TENANT_ID}`;
+  const service = `service for ${tenant_id}`;
   const log_level = ['info', 'warn', 'error'][Math.floor(Math.random() * 3)];
   return {
     timestamp: new Date().toISOString(),
-    TENANT_ID,
+    tenant_id,
     service,
     log_level,
     message: faker.lorem.sentence(),
-    user: faker.person.fullName()
+    user: faker.person.fullName(),
+    topic: "tenant-logs"
   }
 
 }
