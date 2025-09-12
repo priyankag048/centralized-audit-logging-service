@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: confluentinc/cp-kafka
+  tag: 7.4.0
+  pullPolicy: IfNotPresent
+
+service:
+  type: ''
+  name: kafka
+  port: 9092
+
+storage:
+  size: 1Gi
+  storageClassName: manual
+
+resources: {}
+
+ingress:
+  enabled: false
+
+zookeeper:
+  name: zookeeper
+  image: zookeeper:3.8.1
+  service:
+    port: 2181
