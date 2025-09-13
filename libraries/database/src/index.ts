@@ -1,16 +1,19 @@
 import { Sequelize } from 'sequelize';
 import umzug from './umzug-config.ts';
 
-const DB_CONN_STR: string = process.env.DB_CONN_STR!;
+const { POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB } = process.env;
 
+const database_conn_str = `postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}`
 
-if (!DB_CONN_STR) {
+  if (!database_conn_str) {
   console.error('Environment variable DB_CONN_STR is not set.');
   process.exit(1);
 }
 
 // Create Sequelize instance
-const sequelize = new Sequelize(DB_CONN_STR);
+const sequelize = new Sequelize(database_conn_str, {
+  dialect: 'postgres',
+});
 
 
 (async () => {

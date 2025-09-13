@@ -1,0 +1,14 @@
+name: postgres-migration
+label: migration
+image: priyankaguha/database-migration:1.0.0
+postgresql:
+  host: postgresql.logging.svc.cluster.local
+  user: priyankaguha
+  database: auditdb
+
+service:
+  type: ''
+  port: 0000
+
+ingress:
+  emabled: false
