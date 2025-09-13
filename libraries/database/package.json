@@ -1,0 +1,22 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "migrate": "node src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.16.3",
+    "sequelize": "^6.37.7",
+    "umzug": "^3.8.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  },
+  "type": "module"
+}
