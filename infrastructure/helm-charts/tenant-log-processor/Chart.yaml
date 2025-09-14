@@ -1,0 +1,6 @@
+apiVersion: v2
+name: tenant-python-processor
+description: Python processor for consuming Kafka logs and storing into Postgres
+type: application
+version: 0.1.0
+appVersion: "1.0"

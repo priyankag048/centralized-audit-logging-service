@@ -1,0 +1,18 @@
+replicaCount: 1
+
+image:
+  repository: priyankaguha/tenant-python-processor
+  tag: 1.0.0
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+
+env:
+  KAFKA_BOOTSTRAP_SERVERS: kafka.logging.svc.cluster.local:9092
+  KAFKA_TOPIC: tenant-logs
+  POSTGRES_HOST: postgresql.logging.svc.cluster.local
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: tenant_logs
+  POSTGRES_USER: postgres

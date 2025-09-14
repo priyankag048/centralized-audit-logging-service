@@ -9,3 +9,9 @@ echo "Verify cronjobs"
 kubectl get cronjob -n logging
 
 
+echo "Deploying tenant-log-processor..."
+helm upgrade --install tenant-log-sim ../helm-charts/tenant-log-processor \
+  -n logging
+
+echo "Verify deployments"
+kubectl get deployment -n logging | grep -E tenant-log-processor
