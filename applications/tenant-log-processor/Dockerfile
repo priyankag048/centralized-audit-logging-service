@@ -1,24 +1,24 @@
-FROM python:3.13
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim AS uv-builder
 
-# Install curl (required to install uv)
-RUN apt-get update && apt-get install -y curl
-
-# Install uv (https://astral.sh/uv)
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Set working directory
 WORKDIR /app
+
+RUN apt-get update && apt-get install -y ca-certificates curl \
+    && python -m pip install --upgrade pip
+
 
 # Copy project metadata files
 COPY pyproject.toml uv.lock ./
 
-# Install production dependencies
-RUN uv --version && uv sync --locked --no-group dev
+# Sync dependencies using uv (uv is pre-installed in this image)
+RUN uv --version && uv sync --locked 
 
-# Copy application source code
+FROM python:3.13-slim
+
+WORKDIR /app
+
+# Copy installed dependencies from the uv-builder stage
+COPY --from=uv-builder /app /app
+
 COPY . .
 
-# Expose the application port
-
-# Run the FastAPI application using uv
-CMD ["uv", "run", "uvicorn", "main:app"]
+CMD ["uv", "run", "uvicorn", "app.main:app"]
